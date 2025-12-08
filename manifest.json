@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Middle-Click Translate",
+  "version": "1.0.0",
+  "description": "Translate selected text by middle-clicking. Auto-detects source language.",
+  "author": "Your Name",
+  
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  
+  "host_permissions": [
+    "https://translate.googleapis.com/*"
+  ],
+  
+  "background": {
+    "scripts": ["background.js"]
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+  
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  
+  "icons": {
+    "16": "icons/icon-16.svg",
+    "48": "icons/icon-48.svg",
+    "128": "icons/icon-128.svg"
+  },
+  
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "middle-click-translate@example.com",
+      "strict_min_version": "109.0"
+    }
+  }
+}
+
