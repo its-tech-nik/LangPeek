@@ -157,25 +157,31 @@
     currentTooltip.dataset.originalText = originalText;
     currentTooltip.dataset.detectedLang = detectedLang;
 
-    // Add event listeners
+    // Add event listeners with null checks for defensive programming
     const copyBtn = currentTooltip.querySelector('#mct-copy-btn');
     const doneBtn = currentTooltip.querySelector('#mct-done-btn');
     const langSelect = currentTooltip.querySelector('#mct-target-lang');
 
-    copyBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      copyTranslation();
-    });
+    if (copyBtn) {
+      copyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        copyTranslation();
+      });
+    }
 
-    doneBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      removeTooltip();
-    });
+    if (doneBtn) {
+      doneBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        removeTooltip();
+      });
+    }
 
-    langSelect.addEventListener('change', (e) => {
-      e.stopPropagation();
-      handleLanguageChange(e.target.value);
-    });
+    if (langSelect) {
+      langSelect.addEventListener('change', (e) => {
+        e.stopPropagation();
+        handleLanguageChange(e.target.value);
+      });
+    }
   }
 
   // Show error in tooltip

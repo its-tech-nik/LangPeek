@@ -90,27 +90,22 @@ async function translateText(text, targetLang) {
 }
 
 // Listen for messages from content script
-browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((message, sender) => {
   if (message.action === 'translate') {
-    // Handle translation request
-    (async () => {
+    // Handle translation request - return Promise directly for MV3 service workers
+    return (async () => {
       const targetLang = await getTargetLanguage();
       const result = await translateText(message.text, targetLang);
-      sendResponse(result);
+      return result;
     })();
-    
-    // Return true to indicate we'll send response asynchronously
-    return true;
   }
   
   if (message.action === 'getSettings') {
-    // Return current settings
-    (async () => {
+    // Return current settings - return Promise directly for MV3 service workers
+    return (async () => {
       const targetLang = await getTargetLanguage();
-      sendResponse({ targetLanguage: targetLang });
+      return { targetLanguage: targetLang };
     })();
-    
-    return true;
   }
 });
 
