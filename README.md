@@ -1,6 +1,6 @@
 # Middle-Click Translate
 
-A Firefox extension that translates selected text when you middle-click (press the scroll wheel). Features auto-detection of source language and a beautiful, theme-adaptive UI.
+A cross-browser extension for Firefox and Chrome that translates selected text when you middle-click (press the scroll wheel). Features auto-detection of source language and a beautiful, theme-adaptive UI.
 
 ![Translation Popup](screenshots/popup-example.png)
 
@@ -17,19 +17,30 @@ A Firefox extension that translates selected text when you middle-click (press t
 
 ### For Development/Testing
 
+**Firefox:**
+
 1. Open Firefox and navigate to `about:debugging`
 2. Click **"This Firefox"** in the left sidebar
 3. Click **"Load Temporary Add-on..."**
 4. Navigate to this directory and select `manifest.json`
+
+**Chrome:**
+
+1. Open Chrome and navigate to `chrome://extensions/`
+2. Enable **"Developer mode"** (toggle in top right)
+3. Click **"Load unpacked"**
+4. Select this directory
 
 ### For Production
 
 1. Package the extension:
    ```bash
    cd middle-click-translate
-   zip -r middle-click-translate.zip * -x "*.git*" -x "README.md"
+   zip -r middle-click-translate.zip * -x "*.git*" -x "README.md" -x "screenshots/*"
    ```
-2. Submit to [Firefox Add-ons](https://addons.mozilla.org/developers/)
+2. Submit to:
+   - [Firefox Add-ons](https://addons.mozilla.org/developers/)
+   - [Chrome Web Store](https://chrome.google.com/webstore/devconsole/)
 
 ## Usage
 
@@ -80,13 +91,52 @@ middle-click-translate/
 ## Browser Compatibility
 
 - **Firefox**: 109.0 or higher
+- **Chrome**: 90.0 or higher (Chromium-based browsers)
+- **Edge**: 90.0 or higher (Chromium-based)
 - **Manifest**: V3
+- **Cross-browser**: Uses WebExtension Polyfill for compatibility
 
 ## Privacy
 
 - No data is collected or stored by this extension
 - Text is sent to Google Translate API only when you trigger a translation
 - Your language preferences are stored locally in your browser
+
+## Cross-Browser Implementation
+
+This extension uses the [WebExtension Polyfill](https://github.com/mozilla/webextension-polyfill) to ensure compatibility across Firefox and Chrome with a single codebase:
+
+- **Dual Background Configuration**: Includes both `scripts` and `service_worker` in manifest
+- **Promise-based APIs**: Consistent Promise-based `browser.*` API across browsers
+- **No Build Process**: Works directly in both browsers without compilation
+- **Single Package**: One extension package works on Firefox, Chrome, Edge, and other Chromium-based browsers
+
+### Implementation Details
+
+The manifest includes both background configurations:
+
+```json
+"background": {
+  "scripts": ["browser-polyfill.min.js", "background.js"],  // Firefox uses this
+  "service_worker": "background.js"                         // Chrome uses this
+}
+```
+
+- **Firefox**: Uses `scripts` array (MV3), loads polyfill from manifest
+- **Chrome/Edge**: Uses `service_worker` (MV3), loads polyfill via `importScripts()`
+- Each browser uses what it supports and ignores the other configuration
+
+### Files Structure with Polyfill
+
+```
+middle-click-translate/
+├── browser-polyfill.min.js  # WebExtension Polyfill (~10KB)
+├── manifest.json            # Cross-browser compatible manifest
+├── background.js            # Background script (polyfill loaded via manifest)
+├── content.js               # Content script (polyfill loaded via manifest)
+├── options.html             # Options page (polyfill loaded via script tag)
+└── ...
+```
 
 ## License
 
