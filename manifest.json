@@ -15,8 +15,7 @@
   ],
   
   "background": {
-    "scripts": ["browser-polyfill.min.js", "background.js"],
-    "service_worker": "background.js"
+    "scripts": ["browser-polyfill.min.js", "background.js"]
   },
   
   "content_scripts": [
@@ -41,11 +40,12 @@
   
   "browser_specific_settings": {
     "gecko": {
-      "id": "middle-click-translate@example.com",
-      "strict_min_version": "109.0"
+      "id": "@middle-click-translate",
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
-  },
-  
-  "minimum_chrome_version": "93"
+  }
 }
 

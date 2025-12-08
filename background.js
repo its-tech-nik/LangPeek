@@ -1,11 +1,6 @@
 // Background script for Middle-Click Translate
 // Handles translation API calls and settings management
-
-// Import polyfill for service worker compatibility (Chrome)
-// When loaded as scripts array (Firefox), polyfill is already loaded via manifest
-if (typeof importScripts === 'function') {
-  importScripts('browser-polyfill.min.js');
-}
+// Note: browser-polyfill.min.js is loaded via manifest.json scripts array
 
 const DEFAULT_TARGET_LANGUAGE = 'en';
 

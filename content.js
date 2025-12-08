@@ -8,7 +8,7 @@
   let dismissTimeout = null;
 
   // Create and show the translation tooltip
-  function createTooltip(x, y, content, isLoading = false) {
+  function createTooltip(x, y, isLoading = false) {
     // Remove any existing tooltip
     removeTooltip();
 
@@ -17,12 +17,13 @@
     
     if (isLoading) {
       tooltip.classList.add('mct-loading');
-      tooltip.innerHTML = `
-        <span class="mct-spinner"></span>
-        <span class="mct-loading-text">Translating...</span>
-      `;
-    } else {
-      tooltip.innerHTML = content;
+      const spinner = document.createElement('span');
+      spinner.className = 'mct-spinner';
+      const loadingText = document.createElement('span');
+      loadingText.className = 'mct-loading-text';
+      loadingText.textContent = 'Translating...';
+      tooltip.appendChild(spinner);
+      tooltip.appendChild(loadingText);
     }
 
     document.body.appendChild(tooltip);
@@ -118,70 +119,130 @@
     const langNames = getLanguageNames();
     const sourceLangName = langNames[detectedLang] || detectedLang;
     
-    // Create language options for dropdown
+    // Clear existing content
+    currentTooltip.textContent = '';
+    
+    // Create header
+    const header = document.createElement('div');
+    header.className = 'mct-header';
+    const title = document.createElement('span');
+    title.className = 'mct-title';
+    title.textContent = 'Translation';
+    header.appendChild(title);
+    
+    // Create language row
+    const langRow = document.createElement('div');
+    langRow.className = 'mct-lang-row';
+    
+    // From field
+    const fromField = document.createElement('div');
+    fromField.className = 'mct-lang-field';
+    const fromLabel = document.createElement('label');
+    fromLabel.className = 'mct-lang-label';
+    fromLabel.textContent = 'From';
+    const fromDisplay = document.createElement('div');
+    fromDisplay.className = 'mct-lang-display';
+    fromDisplay.textContent = sourceLangName;
+    fromField.appendChild(fromLabel);
+    fromField.appendChild(fromDisplay);
+    
+    // To field
+    const toField = document.createElement('div');
+    toField.className = 'mct-lang-field';
+    const toLabel = document.createElement('label');
+    toLabel.className = 'mct-lang-label';
+    toLabel.textContent = 'To';
+    const langSelect = document.createElement('select');
+    langSelect.className = 'mct-lang-select';
+    langSelect.id = 'mct-target-lang';
+    
+    // Add language options
     const languageOptions = getLanguageOptions();
-    const selectOptions = languageOptions.map(opt => 
-      `<option value="${opt.code}" ${opt.code === targetLang ? 'selected' : ''}>${opt.name}</option>`
-    ).join('');
-
-    currentTooltip.innerHTML = `
-      <div class="mct-header">
-        <span class="mct-title">Translation</span>
-      </div>
-      <div class="mct-lang-row">
-        <div class="mct-lang-field">
-          <label class="mct-lang-label">From</label>
-          <div class="mct-lang-display">${sourceLangName}</div>
-        </div>
-        <div class="mct-lang-field">
-          <label class="mct-lang-label">To</label>
-          <select class="mct-lang-select" id="mct-target-lang">
-            ${selectOptions}
-          </select>
-        </div>
-      </div>
-      <div class="mct-translation" id="mct-translation-text">${escapeHtml(translatedText)}</div>
-      <div class="mct-footer">
-        <button class="mct-btn mct-btn-secondary" id="mct-copy-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-          </svg>
-          Copy
-        </button>
-        <button class="mct-btn mct-btn-primary" id="mct-done-btn">Done</button>
-      </div>
-    `;
+    languageOptions.forEach(opt => {
+      const option = document.createElement('option');
+      option.value = opt.code;
+      option.textContent = opt.name;
+      if (opt.code === targetLang) {
+        option.selected = true;
+      }
+      langSelect.appendChild(option);
+    });
+    
+    toField.appendChild(toLabel);
+    toField.appendChild(langSelect);
+    
+    langRow.appendChild(fromField);
+    langRow.appendChild(toField);
+    
+    // Create translation text
+    const translationDiv = document.createElement('div');
+    translationDiv.className = 'mct-translation';
+    translationDiv.id = 'mct-translation-text';
+    translationDiv.textContent = translatedText;
+    
+    // Create footer with buttons
+    const footer = document.createElement('div');
+    footer.className = 'mct-footer';
+    
+    // Copy button
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'mct-btn mct-btn-secondary';
+    copyBtn.id = 'mct-copy-btn';
+    const copySvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    copySvg.setAttribute('width', '16');
+    copySvg.setAttribute('height', '16');
+    copySvg.setAttribute('viewBox', '0 0 24 24');
+    copySvg.setAttribute('fill', 'none');
+    copySvg.setAttribute('stroke', 'currentColor');
+    copySvg.setAttribute('stroke-width', '2');
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', '9');
+    rect.setAttribute('y', '9');
+    rect.setAttribute('width', '13');
+    rect.setAttribute('height', '13');
+    rect.setAttribute('rx', '2');
+    rect.setAttribute('ry', '2');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1');
+    copySvg.appendChild(rect);
+    copySvg.appendChild(path);
+    copyBtn.appendChild(copySvg);
+    copyBtn.appendChild(document.createTextNode(' Copy'));
+    
+    // Done button
+    const doneBtn = document.createElement('button');
+    doneBtn.className = 'mct-btn mct-btn-primary';
+    doneBtn.id = 'mct-done-btn';
+    doneBtn.textContent = 'Done';
+    
+    footer.appendChild(copyBtn);
+    footer.appendChild(doneBtn);
+    
+    // Append all elements to tooltip
+    currentTooltip.appendChild(header);
+    currentTooltip.appendChild(langRow);
+    currentTooltip.appendChild(translationDiv);
+    currentTooltip.appendChild(footer);
 
     // Store data for re-translation
     currentTooltip.dataset.originalText = originalText;
     currentTooltip.dataset.detectedLang = detectedLang;
 
-    // Add event listeners with null checks for defensive programming
-    const copyBtn = currentTooltip.querySelector('#mct-copy-btn');
-    const doneBtn = currentTooltip.querySelector('#mct-done-btn');
-    const langSelect = currentTooltip.querySelector('#mct-target-lang');
+    // Add event listeners
+    copyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      copyTranslation();
+    });
 
-    if (copyBtn) {
-      copyBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        copyTranslation();
-      });
-    }
+    doneBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      removeTooltip();
+    });
 
-    if (doneBtn) {
-      doneBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        removeTooltip();
-      });
-    }
-
-    if (langSelect) {
-      langSelect.addEventListener('change', (e) => {
-        e.stopPropagation();
-        handleLanguageChange(e.target.value);
-      });
-    }
+    langSelect.addEventListener('change', (e) => {
+      e.stopPropagation();
+      handleLanguageChange(e.target.value);
+    });
   }
 
   // Show error in tooltip
@@ -190,10 +251,23 @@
 
     currentTooltip.classList.remove('mct-loading');
     currentTooltip.classList.add('mct-error');
-    currentTooltip.innerHTML = `
-      <span class="mct-error-icon">⚠</span>
-      <span class="mct-error-text">${escapeHtml(errorMessage)}</span>
-    `;
+    
+    // Clear existing content
+    currentTooltip.textContent = '';
+    
+    // Create error icon
+    const errorIcon = document.createElement('span');
+    errorIcon.className = 'mct-error-icon';
+    errorIcon.textContent = '⚠';
+    
+    // Create error text
+    const errorText = document.createElement('span');
+    errorText.className = 'mct-error-text';
+    errorText.textContent = errorMessage;
+    
+    // Append elements
+    currentTooltip.appendChild(errorIcon);
+    currentTooltip.appendChild(errorText);
   }
 
   // Remove the tooltip
@@ -337,17 +411,50 @@
       // Visual feedback
       const copyBtn = currentTooltip.querySelector('#mct-copy-btn');
       if (copyBtn) {
-        const originalHTML = copyBtn.innerHTML;
-        copyBtn.innerHTML = `
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          Copied!
-        `;
+        // Store original state to restore later
+        if (!copyBtn.dataset.originalState) {
+          copyBtn.dataset.originalState = 'stored';
+        }
+        
+        // Clear and rebuild with "Copied!" message
+        copyBtn.textContent = '';
+        const checkSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        checkSvg.setAttribute('width', '16');
+        checkSvg.setAttribute('height', '16');
+        checkSvg.setAttribute('viewBox', '0 0 24 24');
+        checkSvg.setAttribute('fill', 'none');
+        checkSvg.setAttribute('stroke', 'currentColor');
+        checkSvg.setAttribute('stroke-width', '2');
+        const checkPath = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+        checkPath.setAttribute('points', '20 6 9 17 4 12');
+        checkSvg.appendChild(checkPath);
+        copyBtn.appendChild(checkSvg);
+        copyBtn.appendChild(document.createTextNode(' Copied!'));
         copyBtn.classList.add('mct-copied');
         
         setTimeout(() => {
-          copyBtn.innerHTML = originalHTML;
+          // Restore original "Copy" button content
+          copyBtn.textContent = '';
+          const copySvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          copySvg.setAttribute('width', '16');
+          copySvg.setAttribute('height', '16');
+          copySvg.setAttribute('viewBox', '0 0 24 24');
+          copySvg.setAttribute('fill', 'none');
+          copySvg.setAttribute('stroke', 'currentColor');
+          copySvg.setAttribute('stroke-width', '2');
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.setAttribute('x', '9');
+          rect.setAttribute('y', '9');
+          rect.setAttribute('width', '13');
+          rect.setAttribute('height', '13');
+          rect.setAttribute('rx', '2');
+          rect.setAttribute('ry', '2');
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', 'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1');
+          copySvg.appendChild(rect);
+          copySvg.appendChild(path);
+          copyBtn.appendChild(copySvg);
+          copyBtn.appendChild(document.createTextNode(' Copy'));
           copyBtn.classList.remove('mct-copied');
         }, 2000);
       }
@@ -367,7 +474,11 @@
     // Show loading state in translation box
     const translationBox = currentTooltip.querySelector('#mct-translation-text');
     if (translationBox) {
-      translationBox.innerHTML = '<div class="mct-inline-loading">Translating...</div>';
+      translationBox.textContent = '';
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'mct-inline-loading';
+      loadingDiv.textContent = 'Translating...';
+      translationBox.appendChild(loadingDiv);
     }
 
     // Update "From" field
@@ -397,13 +508,21 @@
         }
       } else {
         if (translationBox) {
-          translationBox.innerHTML = '<div class="mct-inline-error">Translation failed</div>';
+          translationBox.textContent = '';
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'mct-inline-error';
+          errorDiv.textContent = 'Translation failed';
+          translationBox.appendChild(errorDiv);
         }
       }
     } catch (error) {
       console.error('Re-translation error:', error);
       if (translationBox) {
-        translationBox.innerHTML = '<div class="mct-inline-error">Translation failed</div>';
+        translationBox.textContent = '';
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'mct-inline-error';
+        errorDiv.textContent = 'Translation failed';
+        translationBox.appendChild(errorDiv);
       }
     }
   }
@@ -427,7 +546,7 @@
     console.log('Middle-Click Translate: Selected text:', selectedText);
 
     // Show loading tooltip
-    createTooltip(e.clientX, e.clientY, '', true);
+    createTooltip(e.clientX, e.clientY, true);
 
     try {
       // Send translation request to background script

@@ -90,9 +90,9 @@ middle-click-translate/
 
 ## Browser Compatibility
 
-- **Firefox**: 109.0 or higher
-- **Chrome**: 90.0 or higher (Chromium-based browsers)
-- **Edge**: 90.0 or higher (Chromium-based)
+- **Firefox**: 140.0 or higher (required for data_collection_permissions support)
+- **Chrome**: 93.0 or higher (Chromium-based browsers)
+- **Edge**: 93.0 or higher (Chromium-based)
 - **Manifest**: V3
 - **Cross-browser**: Uses WebExtension Polyfill for compatibility
 
@@ -104,27 +104,26 @@ middle-click-translate/
 
 ## Cross-Browser Implementation
 
-This extension uses the [WebExtension Polyfill](https://github.com/mozilla/webextension-polyfill) to ensure compatibility across Firefox and Chrome with a single codebase:
+This extension uses the [WebExtension Polyfill](https://github.com/mozilla/webextension-polyfill) for Firefox compatibility:
 
-- **Dual Background Configuration**: Includes both `scripts` and `service_worker` in manifest
-- **Promise-based APIs**: Consistent Promise-based `browser.*` API across browsers
-- **No Build Process**: Works directly in both browsers without compilation
-- **Single Package**: One extension package works on Firefox, Chrome, Edge, and other Chromium-based browsers
+- **Background Scripts**: Uses `scripts` array (Firefox MV3 format)
+- **Promise-based APIs**: Consistent Promise-based `browser.*` API
+- **No Build Process**: Works directly without compilation
+- **Security**: All innerHTML assignments properly sanitized to prevent XSS
 
 ### Implementation Details
 
-The manifest includes both background configurations:
+The manifest uses Firefox's MV3 background scripts configuration:
 
 ```json
 "background": {
-  "scripts": ["browser-polyfill.min.js", "background.js"],  // Firefox uses this
-  "service_worker": "background.js"                         // Chrome uses this
+  "scripts": ["browser-polyfill.min.js", "background.js"]
 }
 ```
 
-- **Firefox**: Uses `scripts` array (MV3), loads polyfill from manifest
-- **Chrome/Edge**: Uses `service_worker` (MV3), loads polyfill via `importScripts()`
-- Each browser uses what it supports and ignores the other configuration
+- **Firefox**: Native support for MV3 background scripts
+- **Security**: All dynamic content properly escaped with `escapeHtml()` function
+- **DOM manipulation**: Uses safe methods (createElement, textContent) where possible
 
 ### Files Structure with Polyfill
 
