@@ -97,23 +97,16 @@
         top = viewportHeight - tooltipHeight - margin;
       }
       
-      // Apply final position
-      tooltip.style.left = `${left}px`;
-      tooltip.style.top = `${top}px`;
+      // Apply final position (add scroll offsets for absolute positioning)
+      tooltip.style.left = `${left + window.pageXOffset}px`;
+      tooltip.style.top = `${top + window.pageYOffset}px`;
 
       // Trigger animation
       tooltip.classList.add('mct-visible');
     });
 
-    // Auto-dismiss after 8 seconds
-    dismissTimeout = setTimeout(() => {
-      removeTooltip();
-    }, 8000);
-
     // Dismiss on click outside
     document.addEventListener('mousedown', handleOutsideClick);
-    // Dismiss on scroll
-    document.addEventListener('scroll', removeTooltip, { once: true, passive: true });
   }
 
   // Update existing tooltip with translation result
@@ -134,7 +127,6 @@
     currentTooltip.innerHTML = `
       <div class="mct-header">
         <span class="mct-title">Translation</span>
-        <button class="mct-close" title="Close">✕</button>
       </div>
       <div class="mct-lang-row">
         <div class="mct-lang-field">
@@ -166,15 +158,9 @@
     currentTooltip.dataset.detectedLang = detectedLang;
 
     // Add event listeners
-    const closeBtn = currentTooltip.querySelector('.mct-close');
     const copyBtn = currentTooltip.querySelector('#mct-copy-btn');
     const doneBtn = currentTooltip.querySelector('#mct-done-btn');
     const langSelect = currentTooltip.querySelector('#mct-target-lang');
-
-    closeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      removeTooltip();
-    });
 
     copyBtn.addEventListener('click', (e) => {
       e.stopPropagation();
