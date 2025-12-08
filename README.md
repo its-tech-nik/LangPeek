@@ -2,6 +2,8 @@
 
 A Firefox extension that translates selected text when you middle-click (press the scroll wheel). Features auto-detection of source language and a beautiful, theme-adaptive UI.
 
+![Translation Popup](screenshots/popup-example.png)
+
 ## Features
 
 - 🖱️ **Middle-click to translate** - Simply select text and middle-click to see the translation
@@ -93,18 +95,20 @@ MIT License - Feel free to modify and distribute
 ## Troubleshooting
 
 **Translation doesn't appear:**
+
 - Open the Browser Console (Ctrl+Shift+J) to see any errors
 - Make sure you have an internet connection
 - Reload the extension from `about:debugging`
 
 **Middle-click triggers autoscroll:**
+
 - The extension should prevent this, but ensure the text is properly selected before clicking
 
 **Languages not changing:**
+
 - Check the Browser Console for errors
 - Reload the webpage and try again
 
 ## Contributing
 
 Contributions are welcome! Feel free to submit issues or pull requests.
-
