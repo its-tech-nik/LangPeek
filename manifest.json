@@ -3,7 +3,7 @@
   "name": "Middle-Click Translate",
   "version": "1.0.0",
   "description": "Translate selected text by middle-clicking. Auto-detects source language.",
-  "author": "Your Name",
+  "author": "its.tech.nik",
   
   "permissions": [
     "storage",
