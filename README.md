@@ -1,4 +1,4 @@
-# Middle-Click Translate
+# LangPeek
 
 A cross-browser extension for Firefox and Chrome that translates selected text when you middle-click (press the scroll wheel). Features auto-detection of source language and a beautiful, theme-adaptive UI.
 
@@ -35,8 +35,8 @@ A cross-browser extension for Firefox and Chrome that translates selected text w
 
 1. Package the extension:
    ```bash
-   cd middle-click-translate
-   zip -r middle-click-translate.zip * -x "*.git*" -x "README.md" -x "screenshots/*"
+   cd langpeek
+   zip -r langpeek.zip * -x "*.git*" -x "README.md" -x "screenshots/*"
    ```
 2. Submit to:
    - [Firefox Add-ons](https://addons.mozilla.org/developers/)
@@ -56,7 +56,7 @@ A cross-browser extension for Firefox and Chrome that translates selected text w
 ### Setting Default Target Language
 
 1. Right-click the extension icon → **"Manage Extension"** → **"Preferences"**
-2. Or navigate to `about:addons` → find "Middle-Click Translate" → **"Preferences"**
+2. Or navigate to `about:addons` → find "LangPeek" → **"Preferences"**
 3. Select your preferred target language from the dropdown
 4. Settings are saved automatically and synced across devices
 
@@ -74,7 +74,7 @@ English, Spanish, French, German, Italian, Portuguese, Russian, Japanese, Korean
 ## Files Structure
 
 ```
-middle-click-translate/
+langpeek/
 ├── manifest.json        # Extension manifest (MV3)
 ├── background.js        # Background script for API calls
 ├── content.js           # Content script for UI and interaction
@@ -128,7 +128,7 @@ The manifest uses Firefox's MV3 background scripts configuration:
 ### Files Structure with Polyfill
 
 ```
-middle-click-translate/
+langpeek/
 ├── browser-polyfill.min.js  # WebExtension Polyfill (~10KB)
 ├── manifest.json            # Cross-browser compatible manifest
 ├── background.js            # Background script (polyfill loaded via manifest)
