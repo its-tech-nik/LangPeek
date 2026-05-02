@@ -1,0 +1,21 @@
+{
+  "name": "langpeek",
+  "version": "1.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:firefox && npm run build:chrome",
+    "build:firefox": "VITE_FIRST=1 VITE_SKIP_ASSETS=1 VITE_ENTRY=background vite build --mode firefox && VITE_SKIP_ASSETS=1 VITE_ENTRY=content vite build --mode firefox && VITE_ENTRY=options vite build --mode firefox",
+    "build:chrome": "VITE_FIRST=1 VITE_SKIP_ASSETS=1 VITE_ENTRY=background vite build --mode chrome && VITE_SKIP_ASSETS=1 VITE_ENTRY=content vite build --mode chrome && VITE_ENTRY=options vite build --mode chrome",
+    "zip": "npm run zip:firefox && npm run zip:chrome",
+    "zip:firefox": "cd dist/firefox && zip -r ../../langpeek-firefox.zip .",
+    "zip:chrome": "cd dist/chrome && zip -r ../../langpeek-chrome.zip ."
+  },
+  "devDependencies": {
+    "vite": "^6.3.5",
+    "vite-plugin-static-copy": "^2.3.1"
+  },
+  "dependencies": {
+    "webextension-polyfill": "^0.12.0"
+  }
+}

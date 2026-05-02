@@ -1,5 +1,5 @@
-// Content script for LangPeek
-// Handles text selection, middle-click detection, and tooltip display
+// Content script for LangPeek — `browser` comes from browser-polyfill.min.js (manifest).
+/* global browser */
 
 (function() {
   'use strict';

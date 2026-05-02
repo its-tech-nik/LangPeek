@@ -1,6 +1,5 @@
-// Background script for LangPeek
-// Handles translation API calls and settings management
-// Note: browser-polyfill.min.js is loaded via manifest.json scripts array
+// Background script for LangPeek (bundled; Firefox loads polyfill via manifest, Chrome via importScripts).
+/* global browser */
 
 const DEFAULT_TARGET_LANGUAGE = 'en';
 

@@ -1,4 +1,5 @@
-// Options page script for LangPeek
+// Options page — `browser` comes from browser-polyfill.min.js (options.html).
+/* global browser */
 
 const DEFAULT_TARGET_LANGUAGE = 'en';
 
