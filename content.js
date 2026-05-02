@@ -1,4 +1,4 @@
-// Content script for Middle-Click Translate
+// Content script for LangPeek
 // Handles text selection, middle-click detection, and tooltip display
 
 (function() {
@@ -543,7 +543,7 @@
     e.preventDefault();
     e.stopPropagation();
 
-    console.log('Middle-Click Translate: Selected text:', selectedText);
+    console.log('LangPeek: Selected text:', selectedText);
 
     // Show loading tooltip
     createTooltip(e.clientX, e.clientY, true);
@@ -564,7 +564,7 @@
         showTooltipError(result?.error || 'Translation failed');
       }
     } catch (error) {
-      console.error('Middle-Click Translate error:', error);
+      console.error('LangPeek error:', error);
       console.error('Error stack:', error.stack);
       showTooltipError('Failed to connect to translation service');
     }

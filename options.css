@@ -1,4 +1,4 @@
-/* Middle-Click Translate - Options Page Styles */
+/* LangPeek - Options Page Styles */
 /* Supports system light/dark theme via prefers-color-scheme */
 
 /* CSS Variables for theming */
@@ -19,8 +19,6 @@
   --error-bg: rgba(239, 68, 68, 0.1);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --logo-bg: rgba(79, 70, 229, 0.1);
-  --logo-icon: #4f46e5;
 }
 
 /* Dark theme */
@@ -42,8 +40,6 @@
     --error-bg: rgba(248, 113, 113, 0.15);
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
-    --logo-bg: rgba(129, 140, 248, 0.15);
-    --logo-icon: #818cf8;
   }
 }
 
@@ -85,17 +81,15 @@ body {
   justify-content: center;
   width: 48px;
   height: 48px;
-  background: var(--logo-bg);
   border-radius: 12px;
-  color: var(--logo-icon);
+  overflow: hidden;
 }
 
-.logo-bg {
-  fill: var(--logo-bg);
-}
-
-.logo-icon {
-  stroke: var(--logo-icon);
+.logo-img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
 }
 
 .header-text h1 {

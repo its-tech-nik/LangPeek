@@ -1,4 +1,4 @@
-// Background script for Middle-Click Translate
+// Background script for LangPeek
 // Handles translation API calls and settings management
 // Note: browser-polyfill.min.js is loaded via manifest.json scripts array
 

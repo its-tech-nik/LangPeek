@@ -1,4 +1,4 @@
-// Options page script for Middle-Click Translate
+// Options page script for LangPeek
 
 const DEFAULT_TARGET_LANGUAGE = 'en';
 

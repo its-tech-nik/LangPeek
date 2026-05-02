@@ -1,4 +1,5 @@
 # LangPeek
+Repository: [github.com/its-tech-nik/LangPeek](https://github.com/its-tech-nik/LangPeek)
 
 A cross-browser extension for Firefox and Chrome that translates selected text when you middle-click (press the scroll wheel). Features auto-detection of source language and a beautiful, theme-adaptive UI.
 
@@ -14,6 +15,13 @@ A cross-browser extension for Firefox and Chrome that translates selected text w
 - ⚙️ **Customizable** - Set your default target language in preferences
 
 ## Installation
+
+Clone the project (folder name matches the repo):
+
+```bash
+git clone https://github.com/its-tech-nik/LangPeek.git
+cd LangPeek
+```
 
 ### For Development/Testing
 
@@ -35,7 +43,7 @@ A cross-browser extension for Firefox and Chrome that translates selected text w
 
 1. Package the extension:
    ```bash
-   cd langpeek
+   cd LangPeek
    zip -r langpeek.zip * -x "*.git*" -x "README.md" -x "screenshots/*"
    ```
 2. Submit to:
@@ -74,7 +82,7 @@ English, Spanish, French, German, Italian, Portuguese, Russian, Japanese, Korean
 ## Files Structure
 
 ```
-langpeek/
+LangPeek/
 ├── manifest.json        # Extension manifest (MV3)
 ├── background.js        # Background script for API calls
 ├── content.js           # Content script for UI and interaction
@@ -83,9 +91,9 @@ langpeek/
 ├── options.js           # Preferences page logic
 ├── options.css          # Preferences page styles
 └── icons/               # Extension icons (16, 48, 128px)
-    ├── icon-16.svg
-    ├── icon-48.svg
-    └── icon-128.svg
+    ├── icon-16.png
+    ├── icon-48.png
+    └── icon-128.png
 ```
 
 ## Browser Compatibility
@@ -128,7 +136,7 @@ The manifest uses Firefox's MV3 background scripts configuration:
 ### Files Structure with Polyfill
 
 ```
-langpeek/
+LangPeek/
 ├── browser-polyfill.min.js  # WebExtension Polyfill (~10KB)
 ├── manifest.json            # Cross-browser compatible manifest
 ├── background.js            # Background script (polyfill loaded via manifest)
