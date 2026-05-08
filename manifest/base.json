@@ -4,7 +4,7 @@
   "version": "1.0.1",
   "description": "Peek at translations with a middle click. Auto-detects source language.",
   "author": "its.tech.nik",
-  "permissions": ["storage", "activeTab"],
+  "permissions": ["storage"],
   "host_permissions": ["https://translate.googleapis.com/*"],
   "content_scripts": [
     {
